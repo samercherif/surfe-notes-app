@@ -4,6 +4,8 @@ import { resolve } from 'path'
 import svgr from 'vite-plugin-svgr'
 import compression from 'vite-plugin-compression'
 import reactRefresh from '@vitejs/plugin-react-refresh'
+import tailwindcss from 'tailwindcss'
+import autoprefixer from 'autoprefixer'
 
 interface Params {
   mode: 'production' | 'development'
@@ -28,6 +30,7 @@ export default ({ mode }: Params) =>
         '@utils': resolve(__dirname, './src/utils'),
         '@assets': resolve(__dirname, './src/assets'),
         '@pages': resolve(__dirname, './src/pages'),
+        '@types': resolve(__dirname, './src/types'),
       },
     },
     server: {
@@ -38,6 +41,14 @@ export default ({ mode }: Params) =>
       sourcemap: true,
       dynamicImportVarsOptions: {
         exclude: [],
+      },
+    },
+    css: {
+      postcss: {
+        plugins: [tailwindcss, autoprefixer],
+      },
+      modules: {
+        localsConvention: 'camelCase',
       },
     },
   })

@@ -11,7 +11,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"],
+    "types": ["node", "jest", "@testing-library/jest-dom", "vite/client"],
     "paths": {
       "@src/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
@@ -23,7 +23,7 @@
       "@api/*": ["src/api/*"]
     }
   },
-  "include": ["src", "vite.config.ts"],
+  "include": ["src", "vite.config.ts", "postcss.config.js", "tailwind.config.js"],
   "exclude": ["node_modules", "jest.config.ts"],
   "lib": ["dom", "dom.iterable", "esnext"],
   "outDir": "./dist",

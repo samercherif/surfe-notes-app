@@ -22,6 +22,8 @@ export default [
       '**/eslint.config.js',
       '**/jest.config.ts',
       '**/.yarn/*',
+      '**/postcss.config.js',
+      '**/tailwind.config.js',
     ],
   },
   js.configs.recommended,
@@ -161,6 +163,21 @@ export default [
       'jest/no-identical-title': 'error',
       'jest/prefer-to-have-length': 'warn',
       'jest/valid-expect': 'error',
+
+      'max-len': ['error', { 
+        code: 100,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+        ignoreComments: true,
+        ignorePattern: 'class|className|^import\\s.+\\sfrom\\s.+;$'
+      }],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'CallExpression[callee.name="tw"][arguments.length=0]',
+          message: 'Do not use empty tw`` template literals'
+        }
+      ],
     },
   },
 ]
