@@ -1,0 +1,50 @@
+name: Master CI Pipeline
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  quality-and-build:
+    name: Quality check and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.11.0'
+
+      - name: set Yarn version
+        run: yarn set version 4.5.1
+
+      - name: install dependencies
+        id: install
+        run: |
+          echo "Installing dependencies..."
+          yarn install
+          echo "Dependency installation complete!"
+
+      - name: run EsLint
+        id: lint
+        run: |
+          echo "Running ESLint..."
+          yarn lint
+          echo "ESLint check complete!"
+
+      - name: run TypeScript check
+        id: typecheck
+        run: |
+          echo "Running TypeScript check..."
+          yarn type-check
+          echo "TypeScript check complete!"
+
+      - name: build project
+        id: build
+        run: |
+          echo "Building project..."
+          yarn build
+          echo "Build complete!"
