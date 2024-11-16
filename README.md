@@ -30,14 +30,15 @@ yarn install
 
 ## Configuring Visual Studio Code
 
-###Install the ZipFS extension** to allow VSCode to read directly from Yarn's zip files. Search for "Zip File System" in the VSCode extensions marketplace and install it.
+### Install the ZipFS extension
+to allow VSCode to read directly from Yarn's zip files. Search for "Zip File System" in the VSCode extensions marketplace and install it.
 
-###PnPify SDK Setup**: For enhanced compatibility with TypeScript, ESLint, and other tools, you may need to run PnPify. This step generates a `.vscode/pnpify` directory and a `.vscode/settings.json` file configured for Yarn PnP.
+### PnPify SDK Setup
+For enhanced compatibility with TypeScript, ESLint, and other tools, you may need to run PnPify. This step generates a `.vscode/pnpify` directory and a `.vscode/settings.json` file configured for Yarn PnP.
   ```bash
    yarn dlx @yarnpkg/sdks vscode
    ```
-
-###Select the workspace versions** of TypeScript and ESLint in VSCode when prompted, to ensure you're using the versions managed by Yarn PnP.
+Select the workspace versions of TypeScript and ESLint in VSCode when prompted, to ensure you're using the versions managed by Yarn PnP.
 
 ## Available Scripts
 
