@@ -1,0 +1,38 @@
+export default {
+    resolver: 'jest-pnp-resolver',
+    coverageProvider: 'v8',
+    collectCoverage: false,
+    preset: 'ts-jest',
+    testEnvironment: 'jsdom',
+    verbose: true,
+    transform: {
+        "^.+\\.tsx?$": [
+          "ts-jest", {
+            useESM: true,
+          },
+        ]
+    },
+    extensionsToTreatAsEsm: ['.ts', '.tsx'],
+    moduleNameMapper: {
+        "^.+\\.svg$": "jest-svg-transformer",
+        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+        '^@src/(.*)$': '<rootDir>/src/$1',
+        '^@components/(.*)$': '<rootDir>/src/components/$1',
+        '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
+        '^@utils/(.*)$': '<rootDir>/src/utils/$1',
+        '^@types/(.*)$': '<rootDir>/src/types/$1',
+        '^@assets/(.*)$': '<rootDir>/src/assets/$1',
+        '^@api/(.*)$': '<rootDir>/src/api/$1',
+    },
+    setupFilesAfterEnv: [
+        "<rootDir>/support/setupTests.ts"
+     ],
+     collectCoverageFrom: ["./src/**/*.tsx"],
+     coverageReporters: ['html', 'text', 'text-summary'],
+     coverageDirectory: './coverage',
+     globals: {
+      'ts-jest': {
+        tsconfig: 'tsconfig.json',
+      },
+    },
+}
