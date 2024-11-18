@@ -18,7 +18,7 @@ export const ApiClientProvider: React.FC<ClientsProviderProps> = ({ children }) 
   const clients = useMemo(
     () => ({
       apiClient: axios.create({
-        baseURL: process.env.VITE_APP_SURFE_API_URL,
+        baseURL: import.meta.env.VITE_APP_SURFE_API_URL,
         timeout: 5000,
       }),
     }),
