@@ -27,4 +27,9 @@ export default {
   collectCoverageFrom: ['./src/**/*.tsx'],
   coverageReporters: ['html', 'text', 'text-summary'],
   coverageDirectory: './coverage',
+  coverageThreshold: {
+    global: {
+      lines: 90,
+    },
+  },
 }

@@ -27,6 +27,22 @@ jobs:
           echo "Installing dependencies..."
           yarn install
           echo "Dependency installation complete!"
+        
+      - name: test coverage check
+        id: test-coverage
+        run: yarn test:ci
+        env:
+          CI: true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            ./coverage
+            ./reports/junit
+          retention-days: 30
 
       - name: run EsLint
         id: lint
