@@ -6,12 +6,10 @@ export default {
   testEnvironment: 'jsdom',
   verbose: true,
   transform: {
-    '^.+\\.tsx?$': [
-      'ts-jest',
-      {
-        useESM: true,
-      },
-    ],
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      tsconfig: 'tsconfig.json',
+      isolatedModules: true,
+    }]
   },
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   moduleNameMapper: {
@@ -29,9 +27,4 @@ export default {
   collectCoverageFrom: ['./src/**/*.tsx'],
   coverageReporters: ['html', 'text', 'text-summary'],
   coverageDirectory: './coverage',
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json',
-    },
-  },
 }

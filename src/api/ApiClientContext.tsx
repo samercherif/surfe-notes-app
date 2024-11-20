@@ -3,6 +3,7 @@ import type React from 'react'
 import { createContext, useContext, useMemo } from 'react'
 import type { AxiosInstance } from 'axios'
 import axios from 'axios'
+import { VITE_APP_SURFE_API_URL } from '@src/constants'
 
 interface ClientsContextType {
   apiClient: AxiosInstance
@@ -18,7 +19,7 @@ export const ApiClientProvider: React.FC<ClientsProviderProps> = ({ children }) 
   const clients = useMemo(
     () => ({
       apiClient: axios.create({
-        baseURL: import.meta.env.VITE_APP_SURFE_API_URL,
+        baseURL: VITE_APP_SURFE_API_URL,
         timeout: 5000,
       }),
     }),

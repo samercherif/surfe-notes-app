@@ -24,6 +24,7 @@ export default [
       '**/.yarn/*',
       '**/postcss.config.js',
       '**/tailwind.config.js',
+      'support/'
     ],
   },
   js.configs.recommended,

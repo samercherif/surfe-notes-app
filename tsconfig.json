@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "ESNext",
     "jsx": "react-jsx",
     "baseUrl": ".",
     "sourceMap": true, //disable this in prod
@@ -23,10 +23,10 @@
       "@api/*": ["src/api/*"]
     }
   },
-  "include": ["src", "vite.config.ts", "postcss.config.js", "tailwind.config.js"],
-  "exclude": ["node_modules", "jest.config.ts"],
-  "lib": ["dom", "dom.iterable", "esnext"],
+  "include": ["src", "vite.config.ts", "postcss.config.js", "tailwind.config.js", "env.d.ts", "jest.config.ts"],
+  "exclude": ["node_modules"],
+  "lib": ["dom", "dom.iterable", "ESNext"],
   "outDir": "./dist",
   "rootDir": "./src",
-  "noEmitOnError": true
+  "noEmitOnError": true,
 }
