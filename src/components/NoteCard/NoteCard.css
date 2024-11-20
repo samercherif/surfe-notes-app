@@ -1,0 +1,7 @@
+.note-card {
+  @apply p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer border border-gray-200;
+}
+
+.note-card-content {
+  @apply text-gray-600 mb-4 text-sm;
+}
