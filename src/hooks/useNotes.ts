@@ -1,29 +1,29 @@
-import { useState, useEffect } from 'react';
-import type { Note, NotesResponse } from '@src/types/note';
-import { useClients } from '@api/ApiClientContext';
+import { useState, useEffect, useCallback } from 'react'
+import type { Note } from '@src/types/note'
+import { useClients } from '@api/ApiClientContext'
 
 export const useNotes = () => {
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const { apiClient } = useClients();
+  const [notes, setNotes] = useState<Note[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const { apiClient } = useClients()
 
-  const fetchNotes = async () => {
+  const fetchNotes = useCallback(async () => {
     try {
-      setIsLoading(true);
-      const { data } = await apiClient.get<Note[]>('/notes');
-      setNotes(data);
+      setIsLoading(true)
+      const { data } = await apiClient.get<Note[]>('/notes')
+      setNotes(data)
     } catch (err) {
-      setError('Failed to fetch notes. Please try again later.');
-      console.error('Error fetching notes:', err);
+      setError('Failed to fetch notes. Please try again later.')
+      console.error('Error fetching notes:', err)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }, [apiClient, setNotes, setError, setIsLoading])
 
   useEffect(() => {
-    fetchNotes();
-  }, []);
+    fetchNotes()
+  }, [fetchNotes])
 
-  return { notes, isLoading, error, refetchNotes: fetchNotes };
-};
+  return { notes, isLoading, error, refetchNotes: fetchNotes }
+}
