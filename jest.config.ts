@@ -22,6 +22,7 @@ export default {
     '^@types/(.*)$': '<rootDir>/src/types/$1',
     '^@assets/(.*)$': '<rootDir>/src/assets/$1',
     '^@api/(.*)$': '<rootDir>/src/api/$1',
+    '^@pages/(.*)$': '<rootDir>/src/pages/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/support/setupTests.ts'],
   collectCoverageFrom: ['./src/**/*.tsx'],
