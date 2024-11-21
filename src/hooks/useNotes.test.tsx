@@ -1,10 +1,9 @@
-/* eslint-disable max-len */
 import { renderHook, waitFor } from '@testing-library/react'
 import { useNotes } from '@hooks/useNotes'
 import type { Note } from '@src/types/note'
 import { ApiClientProvider } from '@api/ApiClientContext'
 import axios from 'axios'
-import type { ReactNode } from 'react'
+import { act, type ReactNode } from 'react'
 
 jest.mock('@src/constants', () => ({
   VITE_APP_SURFE_API_URL: 'surfUrl',
@@ -13,21 +12,24 @@ jest.mock('@src/constants', () => ({
 jest.mock('axios', () => ({
   create: jest.fn(() => ({
     get: jest.fn(),
+    put: jest.fn(),
   })),
 }))
 
 const mockNotes: Note[] = [
   {
-    id: '1',
+    id: 1,
     body: 'Test Note 1',
   },
   {
-    id: '2',
+    id: 2,
     body: 'Test Content 2',
   },
 ]
 
-const wrapper = ({ children }: { children: ReactNode }) => <ApiClientProvider>{children}</ApiClientProvider>
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <ApiClientProvider>{children}</ApiClientProvider>
+)
 
 describe('useNotes Hook', () => {
   beforeEach(() => {
@@ -40,102 +42,118 @@ describe('useNotes Hook', () => {
 
     expect(result.current.isLoading).toBe(true)
     expect(result.current.notes).toEqual([])
+    expect(result.current.note).toBeUndefined()
     expect(result.current.error).toBeNull()
   })
 
-  it('should fetch notes successfully', async () => {
+  it('should fetch single note successfully', async () => {
+    const mockNote = mockNotes[0]
     const mockGet = jest.fn().mockResolvedValue({
-      data: mockNotes,
+      data: mockNote,
     })
     ;(axios.create as jest.Mock).mockReturnValue({ get: mockGet })
 
     const { result } = renderHook(() => useNotes(), { wrapper })
 
-    expect(result.current.isLoading).toBe(true)
+    await result.current.fetchNoteById(1)
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false)
     })
 
-    expect(result.current.notes).toEqual(mockNotes)
+    expect(result.current.note).toEqual(mockNote)
     expect(result.current.error).toBeNull()
-    expect(mockGet).toHaveBeenCalledWith('/notes')
+    expect(mockGet).toHaveBeenCalledWith('/notes/1')
   })
 
-  it('should handle API error', async () => {
-    const mockError = new Error('Failed to fetch notes')
+  it('should handle API error when fetching single note', async () => {
+    const mockError = new Error('Failed to fetch note')
     const mockGet = jest.fn().mockRejectedValue(mockError)
     ;(axios.create as jest.Mock).mockReturnValue({ get: mockGet })
 
     const { result } = renderHook(() => useNotes(), { wrapper })
 
+    await result.current.fetchNoteById(1)
+
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false)
     })
 
-    expect(result.current.error).toBe('Failed to fetch notes. Please try again later.')
-    expect(result.current.notes).toEqual([])
+    expect(result.current.error).toBe('Failed to fetch the note. Please try again later.')
+    expect(result.current.note).toBeUndefined()
     expect(console.error).toHaveBeenCalledWith('Error fetching notes:', mockError)
   })
 
-  it('should refetch notes when refetchNotes is called', async () => {
-    const mockGet = jest
-      .fn()
-      .mockResolvedValueOnce({ data: mockNotes })
-      .mockResolvedValueOnce({
-        data: [
-          ...mockNotes,
-          {
-            id: '3',
-            body: 'Test Content 3',
-          },
-        ],
-      })
+  it('should update note successfully', async () => {
+    const updatedNote = { id: 1, body: 'Updated content' }
+    const mockPut = jest.fn().mockResolvedValue({
+      data: updatedNote,
+    })
+    ;(axios.create as jest.Mock).mockReturnValue({ get: jest.fn(), put: mockPut })
+
+    const { result } = renderHook(() => useNotes(), { wrapper })
+
+    await act(async () => {
+      result.current.notes = [...mockNotes]
+    })
+
+    await result.current.updateNote(updatedNote)
+
+    expect(mockPut).toHaveBeenCalledWith('/notes/1', updatedNote)
+  })
+
+  it('should handle API error when updating note', async () => {
+    const mockError = new Error('Failed to update note')
+    const mockPut = jest.fn().mockRejectedValue(mockError)
+    ;(axios.create as jest.Mock).mockReturnValue({ get: jest.fn(), put: mockPut })
+
+    const { result } = renderHook(() => useNotes(), { wrapper })
+
+    try {
+      await result.current.updateNote({ id: 1, body: 'Updated content' })
+    } catch (error) {
+      expect(error).toEqual(new Error('Failed to update note. Please try again later.'))
+    }
+
+    expect(console.error).toHaveBeenCalledWith('Error updating note:', mockError)
+  })
+
+  it('should prevent duplicate requests', async () => {
+    const mockGet = jest.fn().mockResolvedValue({
+      data: mockNotes[0],
+    })
     ;(axios.create as jest.Mock).mockReturnValue({ get: mockGet })
 
     const { result } = renderHook(() => useNotes(), { wrapper })
 
+    await Promise.all([
+      result.current.fetchNoteById(1),
+      result.current.fetchNoteById(1),
+      result.current.fetchNoteById(1),
+    ])
+
+    expect(mockGet).toHaveBeenCalledTimes(1)
+  })
+
+  it('should allow new request after previous request completes', async () => {
+    const mockGet = jest
+      .fn()
+      .mockResolvedValueOnce({ data: mockNotes[0] })
+      .mockResolvedValueOnce({ data: mockNotes[1] })
+    ;(axios.create as jest.Mock).mockReturnValue({ get: mockGet })
+
+    const { result } = renderHook(() => useNotes(), { wrapper })
+
+    await result.current.fetchNoteById(1)
     await waitFor(() => {
-      expect(result.current.notes).toEqual(mockNotes)
+      expect(result.current.note).toEqual(mockNotes[0])
     })
 
-    result.current.refetchNotes()
-
+    await result.current.fetchNoteById(2)
     await waitFor(() => {
-      expect(result.current.notes).toHaveLength(3)
+      expect(result.current.note).toEqual(mockNotes[1])
     })
 
     expect(mockGet).toHaveBeenCalledTimes(2)
-  })
-
-  it('should handle empty notes array', async () => {
-    const mockGet = jest.fn().mockResolvedValue({ data: [] })
-    ;(axios.create as jest.Mock).mockReturnValue({ get: mockGet })
-
-    const { result } = renderHook(() => useNotes(), { wrapper })
-
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(false)
-    })
-
-    expect(result.current.notes).toEqual([])
-    expect(result.current.error).toBeNull()
-  })
-
-  it('should maintain loading state while fetching', async () => {
-    const mockGet = jest
-      .fn()
-      .mockImplementation(async () => new Promise((resolve) => setTimeout(() => resolve({ data: mockNotes }), 100)))
-    ;(axios.create as jest.Mock).mockReturnValue({ get: mockGet })
-
-    const { result } = renderHook(() => useNotes(), { wrapper })
-
-    expect(result.current.isLoading).toBe(true)
-
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(false)
-    })
-
-    expect(result.current.notes).toEqual(mockNotes)
   })
 })
