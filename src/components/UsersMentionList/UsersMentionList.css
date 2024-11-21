@@ -1,0 +1,39 @@
+.mention-list {
+    @apply absolute z-10 w-64 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden;
+  }
+  
+  .mention-list-loading {
+    @apply p-3 text-sm text-gray-500 flex items-center justify-center gap-2;
+  }
+  
+  .mention-list-error {
+    @apply p-3 text-sm text-red-500 flex items-center justify-center gap-2;
+  }
+  
+  .mention-item {
+    @apply flex items-center gap-3 px-3 py-2 hover:bg-gray-50 cursor-pointer transition-colors;
+  }
+  
+  .mention-item-selected {
+    @apply bg-gray-50;
+  }
+  
+  .mention-item-avatar {
+    @apply w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 overflow-hidden;
+  }
+  
+  .mention-item-avatar img {
+    @apply w-full h-full object-cover;
+  }
+  
+  .mention-item-info {
+    @apply flex-1 min-w-0;
+  }
+  
+  .mention-item-name {
+    @apply text-sm font-medium text-gray-900 truncate;
+  }
+  
+  .mention-item-username {
+    @apply text-xs text-gray-500 truncate;
+  }

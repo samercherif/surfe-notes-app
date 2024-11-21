@@ -5,6 +5,7 @@ import { useAutoSaveNote } from './UseAutoSaveNote'
 jest.mock('@hooks/useNotes')
 jest.mock('@src/constants', () => ({
   VITE_APP_SURFE_API_URL: 'surfUrl',
+  VITE_APP_SURFE_USERS_API_URL: 'usersUrl',
 }))
 const mockUseNotes = useNotes as jest.MockedFunction<typeof useNotes>
 

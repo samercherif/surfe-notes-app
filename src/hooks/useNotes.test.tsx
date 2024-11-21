@@ -7,6 +7,7 @@ import { act, type ReactNode } from 'react'
 
 jest.mock('@src/constants', () => ({
   VITE_APP_SURFE_API_URL: 'surfUrl',
+  VITE_APP_SURFE_USERS_API_URL: 'usersUrl',
 }))
 
 jest.mock('axios', () => ({

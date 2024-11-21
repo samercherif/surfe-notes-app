@@ -1,3 +1,3 @@
-const { VITE_APP_SURFE_API_URL } = import.meta.env
+const { VITE_APP_SURFE_API_URL, VITE_APP_SURFE_USERS_API_URL } = import.meta.env
 
-export { VITE_APP_SURFE_API_URL }
+export { VITE_APP_SURFE_API_URL, VITE_APP_SURFE_USERS_API_URL }

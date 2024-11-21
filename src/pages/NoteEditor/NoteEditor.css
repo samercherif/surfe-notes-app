@@ -26,6 +26,10 @@
     @apply bg-green-400;
   }
   
+  .note-editor-wrapper {
+    @apply relative;
+  }
+  
   .note-textarea {
     @apply w-full min-h-[calc(100vh-12rem)] p-6 
       bg-white rounded-lg shadow-sm border border-gray-200
@@ -37,4 +41,12 @@
   
   .note-textarea::placeholder {
     @apply text-gray-400;
+  }
+  
+  .mention {
+    @apply inline-flex items-center px-1 mx-0.5 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors;
+  }
+  
+  .mention-marker {
+    @apply text-blue-500 font-medium;
   }
