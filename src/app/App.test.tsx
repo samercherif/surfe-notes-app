@@ -2,6 +2,10 @@ import { render, screen } from '@testing-library/react'
 import NotesList from '@src/pages/NotesList/NotesList'
 import App from './App'
 
+jest.mock('@src/constants', () => ({
+  VITE_APP_SURFE_API_URL: 'surfUrl',
+}))
+
 jest.mock('@pages/NotesList/NotesList', () => ({
   __esModule: true,
   default: jest.fn(() => <div data-testid={'notes-list'}>{'Notes List Component'}</div>),
