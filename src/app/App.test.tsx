@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
-import NotesList from '@pages/NotesList'
+import NotesList from '@src/pages/NotesList/NotesList'
 import App from './App'
 
-jest.mock('@pages/NotesList', () => ({
+jest.mock('@pages/NotesList/NotesList', () => ({
   __esModule: true,
   default: jest.fn(() => <div data-testid={'notes-list'}>{'Notes List Component'}</div>),
 }))

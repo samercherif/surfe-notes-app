@@ -1,0 +1,40 @@
+.note-editor {
+    @apply min-h-screen bg-gray-50;
+  }
+  
+  .note-container {
+    @apply max-w-4xl mx-auto p-4 sm:p-6 lg:p-8;
+  }
+  
+  .note-status {
+    @apply flex items-center justify-end mb-2 text-sm text-gray-500;
+  }
+  
+  .note-status-indicator {
+    @apply flex items-center;
+  }
+  
+  .note-status-dot {
+    @apply w-2 h-2 rounded-full mr-2;
+  }
+  
+  .note-status-dot-saving {
+    @apply bg-yellow-400;
+  }
+  
+  .note-status-dot-saved {
+    @apply bg-green-400;
+  }
+  
+  .note-textarea {
+    @apply w-full min-h-[calc(100vh-12rem)] p-6 
+      bg-white rounded-lg shadow-sm border border-gray-200
+      focus:ring-2 focus:ring-blue-500 focus:border-transparent
+      text-gray-800 text-lg leading-relaxed
+      resize-none transition-shadow duration-200
+      hover:shadow-md focus:shadow-md;
+  }
+  
+  .note-textarea::placeholder {
+    @apply text-gray-400;
+  }
