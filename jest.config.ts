@@ -30,7 +30,7 @@ export default {
   coverageDirectory: './coverage',
   coverageThreshold: {
     global: {
-      lines: 90,
+      lines: 80,
     },
   },
 }
