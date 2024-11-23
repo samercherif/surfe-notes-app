@@ -1,19 +1,40 @@
 .notes-container {
-    @apply max-w-7xl mx-auto py-6 sm:px-6 lg:px-8;
-  }
-  
-  .notes-title {
-    @apply text-3xl font-bold text-gray-900 mb-8 px-4;
-  }
-  
+  @apply max-w-7xl mx-auto py-6 sm:px-6 lg:px-8;
+}
+
+.notes-title {
+  @apply text-3xl font-bold text-gray-900 mb-8 px-4;
+}
+
+.notes-grid {
+  column-count: 1;
+  column-gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
   .notes-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4;
+      column-count: 2;
   }
-  
-  .notes-message {
-    @apply flex justify-center items-center min-h-[400px];
+}
+
+@media (min-width: 1024px) {
+  .notes-grid {
+      column-count: 3;
   }
-  
-  .notes-error {
-    @apply text-red-500;
-  }
+}
+
+.notes-grid > * {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
+
+.notes-message {
+  @apply flex justify-center items-center min-h-[400px];
+}
+
+.notes-error {
+  @apply text-red-500;
+}
