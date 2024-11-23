@@ -1,10 +1,11 @@
+import React, { useCallback, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useAutoSaveNote } from '@hooks/UseAutoSaveNote'
 import { useUserSearch, type User } from '@hooks/useSearchUser'
-import { useParams } from 'react-router-dom'
-import React, { useState, useRef, useCallback } from 'react'
-import './NoteEditor.css'
-import UsersMentionList from '@components/UsersMentionList/UsersMentionList'
 import { EDITOR, TEXT, MENTIONS } from './constants'
+import UsersMentionList from '@components/UsersMentionList/UsersMentionList'
+import TextArea from '@components/TextArea/TextArea'
+import './NoteEditor.css'
 
 const NoteEditor = () => {
   const { id: noteId } = useParams()
@@ -40,13 +41,13 @@ const NoteEditor = () => {
       for (let i = 0; i < line.length; i += charsPerLine) {
         allLines.push(line.slice(i, i + charsPerLine))
       }
-      //handle empty lines with brfeak \n
+      //handle empty lines with break \n
       if (line.length === 0) {
         allLines.push('')
       }
     })
 
-    // textarea coodinates
+    // textarea coordinates
     const { top: textareaTop, left: textareaLeft } = textarea.getBoundingClientRect()
 
     //lines
@@ -59,7 +60,7 @@ const NoteEditor = () => {
 
     const left = textareaLeft + EDITOR.PADDING + lastLineLength * TEXT.CHAR_WIDTH
 
-    // keep mention list inside teh screen
+    //keep mention list inside the screen
     const adjustedLeft = Math.min(left, window.innerWidth - MENTIONS.WIDTH - 10)
 
     return {
@@ -67,12 +68,6 @@ const NoteEditor = () => {
       left: adjustedLeft,
     }
   }, [])
-
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value)
-    setCursorPosition(e.target.selectionStart)
-    setSelectedIndex(0)
-  }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!searchTerm || users.length === 0) return
@@ -144,17 +139,14 @@ const NoteEditor = () => {
           </div>
         </div>
         <div className={'note-editor-wrapper'}>
-          <textarea
+          <TextArea
             ref={textareaRef}
             value={content}
-            onChange={handleTextChange}
+            onChange={setContent}
+            onCursorChange={setCursorPosition}
             onKeyDown={handleKeyDown}
-            onClick={() => setCursorPosition(textareaRef.current?.selectionStart || 0)}
-            onSelect={() => setCursorPosition(textareaRef.current?.selectionStart || 0)}
             placeholder={'Start writing your note...'}
             className={'note-textarea'}
-            autoFocus
-            spellCheck={'true'}
             aria-label={'Note content'}
           />
           {searchTerm && (
