@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import React, { useState, useRef, useCallback } from 'react'
 import './NoteEditor.css'
 import UsersMentionList from '@components/UsersMentionList/UsersMentionList'
+import { EDITOR, TEXT, MENTIONS } from './constants'
 
 const NoteEditor = () => {
   const { id: noteId } = useParams()
@@ -18,19 +19,31 @@ const NoteEditor = () => {
     if (!textareaRef.current) return { top: 0, left: 0 }
 
     const textarea = textareaRef.current
+    const text = textarea.value
     const cursorPosition = textarea.selectionEnd
-    const textBeforeCursor = textarea.value.substring(0, cursorPosition)
-    const lines = textBeforeCursor.split('\n')
+
+    const textBeforeCursor = text.substring(0, cursorPosition)
+    const atIndex = textBeforeCursor.lastIndexOf('@')
+    if (atIndex === -1) return { top: 0, left: 0 }
+
+    const textToAt = text.substring(0, atIndex)
+
+    const lines = textToAt.split('\n')
     const currentLineNumber = lines.length - 1
+
     const currentLineText = lines[currentLineNumber]
 
-    //cursor coordinates
-    const lineHeight = parseInt(getComputedStyle(textarea).lineHeight)
-    const paddingTop = parseInt(getComputedStyle(textarea).paddingTop)
-    const paddingLeft = parseInt(getComputedStyle(textarea).paddingLeft)
+    const { top: textareaTop, left: textareaLeft } = textarea.getBoundingClientRect()
 
-    const top = textarea.offsetTop + paddingTop + currentLineNumber * lineHeight + lineHeight
-    const left = textarea.offsetLeft + paddingLeft + currentLineText.length * 8 //~=character width
+    const top =
+      textareaTop +
+      EDITOR.PADDING +
+      currentLineNumber * TEXT.LINE_HEIGHT +
+      TEXT.LINE_HEIGHT +
+      MENTIONS.OFFSET -
+      textarea.scrollTop
+
+    const left = textareaLeft + EDITOR.PADDING + currentLineText.length * TEXT.CHAR_WIDTH
 
     return { top, left }
   }, [])

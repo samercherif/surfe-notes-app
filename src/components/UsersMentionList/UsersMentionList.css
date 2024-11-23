@@ -1,5 +1,7 @@
 .mention-list {
-    @apply absolute z-10 w-64 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden;
+    @apply fixed z-50 w-64 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden;
+    max-height: 250px;
+    overflow-y: auto;
   }
   
   .mention-list-loading {

@@ -1,52 +1,76 @@
+:root {
+    --editor-width: 415px;
+    --editor-min-height: 400px;
+    --editor-padding: 24px;
+    
+    --text-font-size: 16px;
+    --text-line-height: 24px;
+    --text-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --text-char-width: 9.6px;
+    
+    --mentions-width: 250px;
+    --mentions-max-height: 200px;
+    --mentions-item-height: 40px;
+    --mentions-offset: 8px;
+    --mentions-z-index: 50;
+  }
+
 .note-editor {
     @apply min-h-screen bg-gray-50;
-  }
+}
   
-  .note-container {
+.note-container {
     @apply max-w-4xl mx-auto p-4 sm:p-6 lg:p-8;
-  }
-  
-  .note-status {
-    @apply flex items-center justify-end mb-2 text-sm text-gray-500;
-  }
-  
-  .note-status-indicator {
-    @apply flex items-center;
-  }
-  
-  .note-status-dot {
-    @apply w-2 h-2 rounded-full mr-2;
-  }
-  
-  .note-status-dot-saving {
-    @apply bg-yellow-400;
-  }
-  
-  .note-status-dot-saved {
-    @apply bg-green-400;
-  }
-  
-  .note-editor-wrapper {
-    @apply relative;
-  }
-  
-  .note-textarea {
-    @apply w-full min-h-[calc(100vh-12rem)] p-6 
-      bg-white rounded-lg shadow-sm border border-gray-200
+}
+
+.note-editor-wrapper {
+    @apply relative flex justify-center;
+}
+
+.note-textarea {
+    width: var(--editor-width);
+    min-height: var(--editor-min-height);
+    padding: var(--editor-padding);
+
+    font-size: var(--text-font-size);
+    line-height: var(--text-line-height);
+    font-family: var(--text-font-family);
+    
+    @apply bg-white rounded-lg shadow-sm border border-gray-200
       focus:ring-2 focus:ring-blue-500 focus:border-transparent
-      text-gray-800 text-lg leading-relaxed
       resize-none transition-shadow duration-200
       hover:shadow-md focus:shadow-md;
-  }
+}
+
+.mention-list {
+    position: fixed;
+    width: var(--mentions-width);
+    max-height: var(--mentions-max-height);
+    z-index: var(--mentions-z-index);
+    @apply bg-white rounded-lg shadow-lg border border-gray-200 overflow-y-auto;
+}
+
+.mention-item {
+    height: var(--mentions-item-height);
+    @apply flex items-center gap-3 px-3 hover:bg-gray-50 cursor-pointer transition-colors;
+}
+
+.note-status {
+    @apply flex items-center justify-end mb-2 text-sm text-gray-500;
+}
+
+.note-status-indicator {
+    @apply flex items-center;
+}
   
-  .note-textarea::placeholder {
-    @apply text-gray-400;
-  }
+.note-status-dot {
+    @apply w-2 h-2 rounded-full mr-2;
+}
   
-  .mention {
-    @apply inline-flex items-center px-1 mx-0.5 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors;
-  }
+.note-status-dot-saving {
+    @apply bg-yellow-400;
+}
   
-  .mention-marker {
-    @apply text-blue-500 font-medium;
-  }
+.note-status-dot-saved {
+    @apply bg-green-400;
+}
