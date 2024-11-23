@@ -123,20 +123,18 @@ const NoteEditor = () => {
     <div className={'note-editor'} data-testid={'note-editor'}>
       <div className={'note-container'} data-testid={'note-container'}>
         <div className={'note-status'} data-testid={'note-status'}>
-          <div className={'note-status-indicator'}>
-            {(isSaving || lastSavedAt) && (
-              <>
-                <span
-                  data-testid={'status-dot'}
-                  className={`note-status-dot ${
-                    isSaving ? 'note-status-dot-saving' : 'note-status-dot-saved'
-                  }`}
-                  aria-hidden={'true'}
-                />
-                <span aria-live={'polite'}>{getStatusText()}</span>
-              </>
-            )}
-          </div>
+          {(isSaving || lastSavedAt) && (
+            <>
+              <span
+                data-testid={'status-dot'}
+                className={`note-status-dot ${
+                  isSaving ? 'note-status-dot-saving' : 'note-status-dot-saved'
+                }`}
+                aria-hidden={'true'}
+              />
+              <span aria-live={'polite'}>{getStatusText()}</span>
+            </>
+          )}
         </div>
         <div className={'note-editor-wrapper'}>
           <TextArea
