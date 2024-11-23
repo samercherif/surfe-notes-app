@@ -1,20 +1,3 @@
-:root {
-    --editor-width: 415px;
-    --editor-min-height: 700px;
-    --editor-padding: 24px;
-    
-    --text-font-size: 16px;
-    --text-line-height: 24px;
-    --text-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    --text-char-width: 9.6px;
-    
-    --mentions-width: 250px;
-    --mentions-max-height: 200px;
-    --mentions-item-height: 40px;
-    --mentions-offset: 8px;
-    --mentions-z-index: 50;
-  }
-
 .note-editor {
     @apply min-h-screen bg-gray-50;
 }
@@ -31,10 +14,10 @@
     width: var(--editor-width);
     min-height: var(--editor-min-height);
     padding: var(--editor-padding);
-
     font-size: var(--text-font-size);
     line-height: var(--text-line-height);
     font-family: var(--text-font-family);
+    background: transparent;
     
     @apply bg-white rounded-lg shadow-sm border border-gray-200
       focus:ring-2 focus:ring-blue-500 focus:border-transparent

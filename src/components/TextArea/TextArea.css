@@ -1,0 +1,29 @@
+.textarea-wrapper {
+    position: relative;
+    width: fit-content;
+  }
+  
+  .textarea-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    pointer-events: none;
+    color: transparent;
+    background: transparent;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    font-family: var(--text-font-family);
+    font-size: var(--text-font-size);
+    line-height: var(--text-line-height);
+    padding: var(--editor-padding);
+  }
+  
+  .mention-highlight {
+    background-color: rgba(66, 153, 225, 0.2);
+    border-radius: 3px;
+    padding: 1px 0;
+    color: transparent;
+  }

@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState, useEffect, forwardRef } from 'react'
+import './TextArea.css'
 
 interface TextAreaProps {
   value: string
@@ -25,10 +26,41 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ) => {
     const [localValue, setLocalValue] = useState(value)
     const debounceTimerRef = useRef<number>()
+    const overlayRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
       setLocalValue(value)
     }, [value])
+
+    const getHighlightedText = (text: string) => {
+      const mentionRegex = /@(\w+)/g
+      let lastIndex = 0
+      const result = []
+      let match
+
+      while ((match = mentionRegex.exec(text)) !== null) {
+        // insert text before the mention
+        if (match.index > lastIndex) {
+          result.push(text.slice(lastIndex, match.index))
+        }
+
+        //now insert highlighed mention
+        result.push(
+          <span key={match.index} className={'mention-highlight'}>
+            {match[0]}
+          </span>,
+        )
+
+        lastIndex = match.index + match[0].length
+      }
+
+      //rest of text
+      if (lastIndex < text.length) {
+        result.push(text.slice(lastIndex))
+      }
+
+      return result
+    }
 
     const updateCursorPosition = useCallback(() => {
       const textArea = ref as React.RefObject<HTMLTextAreaElement>
@@ -67,20 +99,33 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       updateCursorPosition()
     }, [updateCursorPosition])
 
+    //sync scroll position between textarea and overlay
+    const handleScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
+      if (overlayRef.current) {
+        overlayRef.current.scrollTop = e.currentTarget.scrollTop
+      }
+    }
+
     return (
-      <textarea
-        ref={ref}
-        value={localValue}
-        onChange={handleChange}
-        onKeyDown={onKeyDown}
-        onClick={updateCursorPosition}
-        onSelect={handleSelect}
-        placeholder={placeholder}
-        className={className}
-        autoFocus
-        spellCheck
-        aria-label={ariaLabel}
-      />
+      <div className={'textarea-wrapper'}>
+        <div ref={overlayRef} className={'textarea-overlay'} aria-hidden={'true'}>
+          {getHighlightedText(localValue)}
+        </div>
+        <textarea
+          ref={ref}
+          value={localValue}
+          onChange={handleChange}
+          onKeyDown={onKeyDown}
+          onClick={updateCursorPosition}
+          onSelect={handleSelect}
+          onScroll={handleScroll}
+          placeholder={placeholder}
+          className={className}
+          autoFocus
+          spellCheck
+          aria-label={ariaLabel}
+        />
+      </div>
     )
   },
 )
