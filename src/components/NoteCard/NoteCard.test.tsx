@@ -3,7 +3,7 @@ import NoteCard from './NoteCard'
 
 describe('NoteCard', () => {
   const mockNote = {
-    id: '1',
+    id: 1,
     body: 'Test note content',
   }
 
@@ -20,7 +20,7 @@ describe('NoteCard', () => {
 
   it('truncates long content and adds ellipsis', () => {
     const longNote = {
-      id: '2',
+      id: 2,
       body: 'a'.repeat(150),
     }
 
@@ -30,7 +30,7 @@ describe('NoteCard', () => {
 
   it('does not truncate content under 100 characters', () => {
     const shortNote = {
-      id: '3',
+      id: 3,
       body: 'Short content',
     }
 

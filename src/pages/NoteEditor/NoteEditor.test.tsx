@@ -138,7 +138,7 @@ describe('NoteEditor', () => {
       })
 
       render(<NoteEditor />)
-      const textarea = screen.getByRole('textbox')
+      const textarea = screen.getByRole('textbox') as HTMLTextAreaElement
 
       Object.defineProperty(textarea, 'selectionStart', {
         value: 5,
