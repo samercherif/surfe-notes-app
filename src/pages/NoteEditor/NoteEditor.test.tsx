@@ -2,7 +2,7 @@ import { render, screen, fireEvent, act } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 import { useAutoSaveNote } from '@hooks/UseAutoSaveNote'
 import { useUserSearch } from '@hooks/useSearchUser'
-import { EDITOR, TEXT } from './constants'
+import { EDITOR } from './constants'
 import NoteEditor from './NoteEditor'
 
 jest.mock('react-router-dom', () => ({
