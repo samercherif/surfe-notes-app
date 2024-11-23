@@ -19,33 +19,53 @@ const NoteEditor = () => {
     if (!textareaRef.current) return { top: 0, left: 0 }
 
     const textarea = textareaRef.current
-    const text = textarea.value
-    const cursorPosition = textarea.selectionEnd
-
-    const textBeforeCursor = text.substring(0, cursorPosition)
+    const textBeforeCursor = textarea.value.substring(0, textarea.selectionEnd)
     const atIndex = textBeforeCursor.lastIndexOf('@')
+
     if (atIndex === -1) return { top: 0, left: 0 }
 
-    const textToAt = text.substring(0, atIndex)
+    //all text up to the @ symbol
+    const textToAt = textBeforeCursor.substring(0, atIndex)
 
-    const lines = textToAt.split('\n')
-    const currentLineNumber = lines.length - 1
+    const availableWidth = EDITOR.WIDTH - EDITOR.PADDING * 2
+    const charsPerLine = Math.floor(availableWidth / TEXT.CHAR_WIDTH)
 
-    const currentLineText = lines[currentLineNumber]
+    // split text by explicit line breaks first
+    const explicitLines = textToAt.split('\n')
 
+    // calculate lines for each explicit line
+    const allLines: string[] = []
+    explicitLines.forEach((line) => {
+      //split long lines into wrapped lines
+      for (let i = 0; i < line.length; i += charsPerLine) {
+        allLines.push(line.slice(i, i + charsPerLine))
+      }
+      //handle empty lines with brfeak \n
+      if (line.length === 0) {
+        allLines.push('')
+      }
+    })
+
+    // textarea coodinates
     const { top: textareaTop, left: textareaLeft } = textarea.getBoundingClientRect()
 
+    //lines
+    const lineIndex = allLines.length - 1
+    const lastLine = allLines[lineIndex] || ''
+    const lastLineLength = lastLine.length
+
     const top =
-      textareaTop +
-      EDITOR.PADDING +
-      currentLineNumber * TEXT.LINE_HEIGHT +
-      TEXT.LINE_HEIGHT +
-      MENTIONS.OFFSET -
-      textarea.scrollTop
+      textareaTop + EDITOR.PADDING + (lineIndex + 1) * TEXT.LINE_HEIGHT - textarea.scrollTop
 
-    const left = textareaLeft + EDITOR.PADDING + currentLineText.length * TEXT.CHAR_WIDTH
+    const left = textareaLeft + EDITOR.PADDING + lastLineLength * TEXT.CHAR_WIDTH
 
-    return { top, left }
+    // keep mention list inside teh screen
+    const adjustedLeft = Math.min(left, window.innerWidth - MENTIONS.WIDTH - 10)
+
+    return {
+      top,
+      left: adjustedLeft,
+    }
   }, [])
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
