@@ -1,5 +1,7 @@
 export const EDITOR = {
   WIDTH: 415,
+  SMALL_SCREEN_WIDTH: 300,
+  SMALL_SCREEN_BREAKPOINT: 470,
   MIN_HEIGHT: 400,
   PADDING: 24,
 } as const
@@ -13,6 +15,7 @@ export const TEXT = {
 
 export const MENTIONS = {
   WIDTH: 250,
+  SMALL_SCREEN_WIDTH: 200,
   MAX_HEIGHT: 200,
   ITEM_HEIGHT: 40,
   OFFSET: 8,

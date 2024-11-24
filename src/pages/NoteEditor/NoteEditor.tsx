@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { useAutoSaveNote } from '@hooks/UseAutoSaveNote'
 import { useUserSearch, type User } from '@hooks/useSearchUser'
@@ -15,10 +15,25 @@ const NoteEditor = () => {
   const [cursorPosition, setCursorPosition] = useState(0)
   const location = useLocation()
   const backgroundColor = location.state?.backgroundColor
+  const [isSmallScreen, setIsSmallScreen] = useState(false)
 
   const { searchTerm, users, isLoading, error } = useUserSearch(content, cursorPosition)
 
   const editorBackground = backgroundColor ?? 'bg-gray-50'
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= EDITOR.SMALL_SCREEN_BREAKPOINT)
+    }
+
+    handleResize() // Initial check
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const getEditorWidth = () => {
+    return isSmallScreen ? EDITOR.SMALL_SCREEN_WIDTH : EDITOR.WIDTH
+  }
 
   const getMentionListPosition = useCallback(() => {
     if (!textareaRef.current) return { top: 0, left: 0 }
@@ -29,10 +44,9 @@ const NoteEditor = () => {
 
     if (atIndex === -1) return { top: 0, left: 0 }
 
-    //all text up to the @ symbol
     const textToAt = textBeforeCursor.substring(0, atIndex)
-
-    const availableWidth = EDITOR.WIDTH - EDITOR.PADDING * 2
+    const currentEditorWidth = getEditorWidth()
+    const availableWidth = currentEditorWidth - (isSmallScreen ? EDITOR.PADDING * 1.5 : EDITOR.PADDING * 2)
     const charsPerLine = Math.floor(availableWidth / TEXT.CHAR_WIDTH)
 
     // split text by explicit line breaks first
@@ -54,24 +68,28 @@ const NoteEditor = () => {
     // textarea coordinates
     const { top: textareaTop, left: textareaLeft } = textarea.getBoundingClientRect()
 
-    //lines
     const lineIndex = allLines.length - 1
     const lastLine = allLines[lineIndex] || ''
     const lastLineLength = lastLine.length
 
-    const top =
-      textareaTop + EDITOR.PADDING + (lineIndex + 1) * TEXT.LINE_HEIGHT - textarea.scrollTop
+    const top = textareaTop + 
+                (isSmallScreen ? EDITOR.PADDING * 0.75 : EDITOR.PADDING) + 
+                (lineIndex + 1) * TEXT.LINE_HEIGHT - 
+                textarea.scrollTop
 
-    const left = textareaLeft + EDITOR.PADDING + lastLineLength * TEXT.CHAR_WIDTH
+    const left = textareaLeft + 
+                (isSmallScreen ? EDITOR.PADDING * 0.75 : EDITOR.PADDING) + 
+                lastLineLength * TEXT.CHAR_WIDTH
 
     //keep mention list inside the screen
-    const adjustedLeft = Math.min(left, window.innerWidth - MENTIONS.WIDTH - 10)
+    const mentionsWidth = isSmallScreen ? MENTIONS.SMALL_SCREEN_WIDTH : MENTIONS.WIDTH
+    const adjustedLeft = Math.min(left, window.innerWidth - mentionsWidth - 10)
 
     return {
       top,
       left: adjustedLeft,
     }
-  }, [])
+  }, [isSmallScreen])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!searchTerm || users.length === 0) return

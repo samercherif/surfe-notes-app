@@ -18,3 +18,10 @@
     --mentions-offset: 8px;
     --mentions-z-index: 50;
   }
+
+  @media (max-width: 470px) {
+    :root {
+      --editor-width: 300px;
+      --mentions-width: 200px;
+    }
+  }
