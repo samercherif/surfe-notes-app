@@ -2,6 +2,9 @@
 
 [![Main CI Pipeline](https://github.com/samercherif/surfe-notes-app/actions/workflows/main.yml/badge.svg)](https://github.com/samercherif/surfe-notes-app/actions/workflows/main.yml)
 
+## Use thus URL to access the app live
+https://samercherif.github.io/surfe-notes-app/
+
 ## Tech Stack
 
 - React 18.3.1
