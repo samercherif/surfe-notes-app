@@ -13,6 +13,7 @@ interface Params {
 // https://vitejs.dev/config/
 export default ({ mode }: Params) =>
   defineConfig({
+    base: mode === 'production' ? '/surfe-notes-app/' : '/',
     plugins: [
       react({
         jsxRuntime: 'automatic',

@@ -70,6 +70,9 @@ jobs:
           yarn build
           echo "Build complete!"
 
+      - name: create .nojekyll file
+        run: touch dist/.nojekyll
+
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v3
         with:
