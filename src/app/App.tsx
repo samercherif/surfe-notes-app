@@ -1,9 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import NotesList from '@src/pages/NotesList/NotesList'
 import NoteEditor from '@pages/NoteEditor/NoteEditor'
+import { BASE_URL, DEV } from '@src/constants'
 
 const App = () => {
-  const basename = import.meta.env.DEV ? '/' : import.meta.env.BASE_URL
+  const basename = DEV ? '/' : BASE_URL
   return (
     <BrowserRouter basename={basename}>
       <Routes>

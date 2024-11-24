@@ -5,6 +5,8 @@ import App from './App'
 jest.mock('@src/constants', () => ({
   VITE_APP_SURFE_API_URL: 'surfUrl',
   VITE_APP_SURFE_USERS_API_URL: 'usersUrl',
+  BASE_URL: '/',
+  DEV: '/',
 }))
 
 jest.mock('@pages/NotesList/NotesList', () => ({
