@@ -3,8 +3,9 @@ import NotesList from '@src/pages/NotesList/NotesList'
 import NoteEditor from '@pages/NoteEditor/NoteEditor'
 
 const App = () => {
+  const basename = import.meta.env.DEV ? '/' : import.meta.env.BASE_URL
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route path={'/'} element={<NotesList />} />
         <Route path={'/notes/:id'} element={<NoteEditor />} />
