@@ -4,6 +4,11 @@ on:
   push:
     branches: [master]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   quality-and-build:
     name: Quality check and build
@@ -64,3 +69,21 @@ jobs:
           echo "Building project..."
           yarn build
           echo "Build complete!"
+
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    name: deploy to Github pages
+    needs: quality-and-build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: deploy to Github pages
+        id: deployment
+        uses: actions/deploy-pages@v4
