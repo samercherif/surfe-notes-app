@@ -13,3 +13,5 @@ export const getNoteColor = (index: number): string => {
   const colorIndex = (((index - 1) % 6) + 1) as NoteColorKey
   return NOTE_COLORS[colorIndex]
 }
+
+export const MENTION_REGEX = /(@\w+)/g

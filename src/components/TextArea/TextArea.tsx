@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState, useEffect, forwardRef } from 'react'
 import './TextArea.css'
+import { MENTION_REGEX } from '@src/utils'
 
 interface TextAreaProps {
   value: string
@@ -33,12 +34,11 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     }, [value])
 
     const getHighlightedText = (text: string) => {
-      const mentionRegex = /@(\w+)/g
       let lastIndex = 0
       const result = []
       let match
 
-      while ((match = mentionRegex.exec(text)) !== null) {
+      while ((match = MENTION_REGEX.exec(text)) !== null) {
         // insert text before the mention
         if (match.index > lastIndex) {
           result.push(text.slice(lastIndex, match.index))

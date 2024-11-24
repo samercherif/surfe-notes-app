@@ -1,6 +1,7 @@
 import type { Note } from '@src/types/note'
 import './NoteCard.css'
 import { getNoteColor } from '@src/utils'
+import FormattedNoteContent from './FormattedNoteContent'
 
 interface NoteCardProps {
   note: Note
@@ -9,7 +10,6 @@ interface NoteCardProps {
 }
 
 const NoteCard = ({ note, onClick, index }: NoteCardProps) => {
-  const previewContent = note.body.length > 300 ? `${note.body.slice(0, 300)}...` : note.body
   const backgroundColor = getNoteColor(index)
 
   return (
@@ -26,7 +26,9 @@ const NoteCard = ({ note, onClick, index }: NoteCardProps) => {
         }
       }}
     >
-      <p className={'note-card-content'}>{previewContent}</p>
+      <div className={'note-card-content'}>
+        <FormattedNoteContent content={note.body} maxLength={300} />
+      </div>
     </div>
   )
 }

@@ -40,13 +40,21 @@ describe('NoteCard', () => {
 
   it('calls onClick handler when clicked', () => {
     render(<NoteCard note={mockNote} onClick={mockOnClick} index={0} />)
-    fireEvent.click(screen.getByText('Test note content'))
+    fireEvent.click(screen.getByTestId('note-card'))
     expect(mockOnClick).toHaveBeenCalledTimes(1)
   })
 
-  it('applies correct CSS classes', () => {
-    render(<NoteCard note={mockNote} onClick={mockOnClick} index={0} />)
-    expect(screen.getByTestId('note-card')).toHaveClass('note-card')
-    expect(screen.getByText('Test note content')).toHaveClass('note-card-content')
+  it('renders mentions with special styling', () => {
+    const noteWithMention = {
+      id: 3,
+      body: 'Hello @john and @jane!',
+    }
+
+    render(<NoteCard note={noteWithMention} onClick={mockOnClick} index={0} />)
+
+    const mentions = screen.getAllByText(/@\w+/)
+    mentions.forEach((mention) => {
+      expect(mention).toHaveClass('bg-blue-100', 'text-blue-700')
+    })
   })
 })
