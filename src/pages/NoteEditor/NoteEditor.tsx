@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useAutoSaveNote } from '@hooks/UseAutoSaveNote'
 import { useUserSearch, type User } from '@hooks/useSearchUser'
 import { EDITOR, TEXT, MENTIONS } from './constants'
@@ -13,8 +13,12 @@ const NoteEditor = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [cursorPosition, setCursorPosition] = useState(0)
+  const location = useLocation()
+  const backgroundColor = location.state?.backgroundColor
 
   const { searchTerm, users, isLoading, error } = useUserSearch(content, cursorPosition)
+
+  const editorBackground = backgroundColor ?? 'bg-gray-50'
 
   const getMentionListPosition = useCallback(() => {
     if (!textareaRef.current) return { top: 0, left: 0 }
@@ -120,7 +124,13 @@ const NoteEditor = () => {
   }
 
   return (
-    <div className={'note-editor'} data-testid={'note-editor'}>
+    <div
+      className={'note-editor'}
+      data-testid={'note-editor'}
+      style={{
+        boxShadow: `inset 0 0 300px 200px ${editorBackground}`,
+      }}
+    >
       <div className={'note-container'} data-testid={'note-container'}>
         <div className={'note-status'} data-testid={'note-status'}>
           {(isSaving || lastSavedAt) && (

@@ -1,12 +1,14 @@
 import { render, screen, fireEvent, act } from '@testing-library/react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useAutoSaveNote } from '@hooks/UseAutoSaveNote'
 import { useUserSearch } from '@hooks/useSearchUser'
 import { EDITOR } from './constants'
 import NoteEditor from './NoteEditor'
+import { NOTE_COLORS } from '@src/utils'
 
 jest.mock('react-router-dom', () => ({
   useParams: jest.fn(),
+  useLocation: jest.fn(),
 }))
 
 jest.mock('@hooks/UseAutoSaveNote')
@@ -28,6 +30,13 @@ describe('NoteEditor', () => {
     jest.clearAllMocks()
     jest.useFakeTimers()
     ;(useParams as jest.Mock).mockReturnValue({ id: '123' })
+    ;(useLocation as jest.Mock).mockReturnValue({
+      pathname: '/notes/123',
+      search: '',
+      hash: '',
+      state: { backgroundColor: NOTE_COLORS[1] },
+      key: 'default',
+    })
 
     const mockUseAutoSaveNote = useAutoSaveNote as jest.MockedFunction<typeof useAutoSaveNote>
     mockUseAutoSaveNote.mockReturnValue({

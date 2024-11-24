@@ -101,7 +101,7 @@ describe('NotesList', () => {
     renderWithMocks({ notes: mockNotes })
 
     fireEvent.click(screen.getByTestId('note-card-1'))
-    expect(mockNavigate).toHaveBeenCalledWith('/notes/1')
+    expect(mockNavigate).toHaveBeenCalledWith('/notes/1', { state: { backgroundColor: undefined } })
   })
 
   it('creates new note when create button is clicked', async () => {

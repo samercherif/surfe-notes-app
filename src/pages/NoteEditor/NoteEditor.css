@@ -1,5 +1,6 @@
 .note-editor {
-    @apply min-h-screen bg-gray-50;
+    @apply min-h-screen;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
   
 .note-container {

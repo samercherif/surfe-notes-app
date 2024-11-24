@@ -17,8 +17,8 @@ const NotesPage = () => {
     fetchNotes()
   }, [fetchNotes])
 
-  const handleNoteClick = (note: Note) => {
-    navigate(`/notes/${note.id}`)
+  const handleNoteClick = (note: Note, backgroundColor: string) => {
+    navigate(`/notes/${note.id}`, { state: { backgroundColor } })
   }
 
   const handleCreateNote = async () => {
@@ -123,8 +123,8 @@ const NotesPage = () => {
         </div>
       ) : (
         <div data-testid={'notes-grid'} className={'notes-grid'}>
-          {notes.map((note) => (
-            <NoteCard key={note.id} note={note} onClick={handleNoteClick} />
+          {notes.map((note, index) => (
+            <NoteCard key={note.id} note={note} onClick={handleNoteClick} index={index + 1} />
           ))}
         </div>
       )}
