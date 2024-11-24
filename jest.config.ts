@@ -25,7 +25,13 @@ export default {
     '^@pages/(.*)$': '<rootDir>/src/pages/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/support/setupTests.ts'],
-  collectCoverageFrom: ['./src/**/*.tsx'],
+  collectCoverageFrom: [
+    './src/**/*.{ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/**/index.ts',
+    '!src/constants.ts',
+    '!src/vite-env.d.ts'
+  ],
   coverageReporters: ['html', 'text', 'text-summary'],
   coverageDirectory: './coverage',
   coverageThreshold: {
