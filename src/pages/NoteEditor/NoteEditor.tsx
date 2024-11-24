@@ -26,14 +26,14 @@ const NoteEditor = () => {
       setIsSmallScreen(window.innerWidth <= EDITOR.SMALL_SCREEN_BREAKPOINT)
     }
 
-    handleResize() // Initial check
+    handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const getEditorWidth = () => {
+  const getEditorWidth = useCallback(() => {
     return isSmallScreen ? EDITOR.SMALL_SCREEN_WIDTH : EDITOR.WIDTH
-  }
+  }, [isSmallScreen])
 
   const getMentionListPosition = useCallback(() => {
     if (!textareaRef.current) return { top: 0, left: 0 }
@@ -46,7 +46,8 @@ const NoteEditor = () => {
 
     const textToAt = textBeforeCursor.substring(0, atIndex)
     const currentEditorWidth = getEditorWidth()
-    const availableWidth = currentEditorWidth - (isSmallScreen ? EDITOR.PADDING * 1.5 : EDITOR.PADDING * 2)
+    const availableWidth =
+      currentEditorWidth - (isSmallScreen ? EDITOR.PADDING * 1.5 : EDITOR.PADDING * 2)
     const charsPerLine = Math.floor(availableWidth / TEXT.CHAR_WIDTH)
 
     // split text by explicit line breaks first
@@ -72,14 +73,16 @@ const NoteEditor = () => {
     const lastLine = allLines[lineIndex] || ''
     const lastLineLength = lastLine.length
 
-    const top = textareaTop + 
-                (isSmallScreen ? EDITOR.PADDING * 0.75 : EDITOR.PADDING) + 
-                (lineIndex + 1) * TEXT.LINE_HEIGHT - 
-                textarea.scrollTop
+    const top =
+      textareaTop +
+      (isSmallScreen ? EDITOR.PADDING * 0.75 : EDITOR.PADDING) +
+      (lineIndex + 1) * TEXT.LINE_HEIGHT -
+      textarea.scrollTop
 
-    const left = textareaLeft + 
-                (isSmallScreen ? EDITOR.PADDING * 0.75 : EDITOR.PADDING) + 
-                lastLineLength * TEXT.CHAR_WIDTH
+    const left =
+      textareaLeft +
+      (isSmallScreen ? EDITOR.PADDING * 0.75 : EDITOR.PADDING) +
+      lastLineLength * TEXT.CHAR_WIDTH
 
     //keep mention list inside the screen
     const mentionsWidth = isSmallScreen ? MENTIONS.SMALL_SCREEN_WIDTH : MENTIONS.WIDTH
@@ -89,7 +92,7 @@ const NoteEditor = () => {
       top,
       left: adjustedLeft,
     }
-  }, [isSmallScreen])
+  }, [isSmallScreen, getEditorWidth])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!searchTerm || users.length === 0) return
